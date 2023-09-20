@@ -1,21 +1,52 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import {
+	View,
+	Text,
+	TextInput,
+	StyleSheet,
+	TouchableOpacity,
+	KeyboardAvoidingView,
+	TouchableWithoutFeedback,
+	Keyboard,
+} from 'react-native'
 
 export default function RegistrationScreen() {
-	const [text, setText] = useState('')
+	const [name, setName] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+	const handleRegistration = () => {
+		console.log('Name:', name)
+		console.log('Email:', email)
+		console.log('Password:', password)
+	}
+
 	return (
-		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
-			<View style={styles.innerContainer}>
-				<Text style={styles.heading}>Реєстрація</Text>
-				<TextInput style={styles.input} placeholder='Логін' value={text} onChangeText={setText} />
-				<TextInput style={styles.input} placeholder='Адреса електронної пошти' value={text} onChangeText={setText} />
-				<TextInput style={styles.input} placeholder='Пароль' secureTextEntry value={text} onChangeText={setText} />
-				<TouchableOpacity style={styles.button}>
-					<Text style={styles.buttonText}>Зареєструватися</Text>
-				</TouchableOpacity>
-				<Text style={styles.span}>Вже є акаунт? Увійти</Text>
-			</View>
-		</KeyboardAvoidingView>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+				<View style={styles.innerContainer}>
+					<Text style={styles.heading}>Реєстрація</Text>
+					<TextInput style={styles.input} placeholder='Логін' value={name} onChangeText={setName} />
+					<TextInput
+						style={styles.input}
+						placeholder='Адреса електронної пошти'
+						value={email}
+						onChangeText={setEmail}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder='Пароль'
+						secureTextEntry
+						value={password}
+						onChangeText={setPassword}
+					/>
+					<TouchableOpacity style={styles.button} onPress={handleRegistration}>
+						<Text style={styles.buttonText}>Зареєструватися</Text>
+					</TouchableOpacity>
+					<Text style={styles.span}>Вже є акаунт? Увійти</Text>
+				</View>
+			</KeyboardAvoidingView>
+		</TouchableWithoutFeedback>
 	)
 }
 

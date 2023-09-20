@@ -1,20 +1,48 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	StyleSheet,
+	KeyboardAvoidingView,
+	TouchableWithoutFeedback,
+	Keyboard,
+} from 'react-native'
 
 export default LoginScreen = () => {
-	const [text, setText] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const handleLogin = () => {
+		console.log('Email:', email)
+		console.log('Password:', password)
+	}
+
 	return (
-		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
-			<View style={styles.innerContainer}>
-				<Text style={styles.heading}> Увійти </Text>
-				<TextInput style={styles.input} placeholder='Адреса електронної пошти' value={text} onChangeText={setText} />
-				<TextInput style={styles.input} placeholder='Пароль' secureTextEntry value={text} onChangeText={setText} />
-				<TouchableOpacity style={styles.button}>
-					<Text style={styles.buttonText}>Увійти</Text>
-				</TouchableOpacity>
-				<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
-			</View>
-		</KeyboardAvoidingView>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+				<View style={styles.innerContainer}>
+					<Text style={styles.heading}> Увійти </Text>
+					<TextInput
+						style={styles.input}
+						placeholder='Адреса електронної пошти'
+						value={email}
+						onChangeText={setEmail}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder='Пароль'
+						secureTextEntry
+						value={password}
+						onChangeText={setPassword}
+					/>
+					<TouchableOpacity style={styles.button} onPress={handleLogin}>
+						<Text style={styles.buttonText}>Увійти</Text>
+					</TouchableOpacity>
+					<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
+				</View>
+			</KeyboardAvoidingView>
+		</TouchableWithoutFeedback>
 	)
 }
 
