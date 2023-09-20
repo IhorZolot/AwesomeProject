@@ -1,23 +1,30 @@
-import React from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 
 export default function RegistrationScreen() {
+	const [text, setText] = useState('')
 	return (
-		<View style={styles.container}>
-			<Text style={styles.heading}>Реєстрація</Text>
-			<TextInput style={styles.input} placeholder='Логін' />
-			<TextInput style={styles.input} placeholder='Адреса електронної пошти' />
-			<TextInput style={styles.input} placeholder='Пароль' secureTextEntry />
-			<TouchableOpacity style={styles.button}>
-				<Text style={styles.buttonText}>Зареєструватися</Text>
-			</TouchableOpacity>
-			<Text style={styles.span}>Вже є акаунт? Увійти</Text>
-		</View>
+		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+			<View style={styles.innerContainer}>
+				<Text style={styles.heading}>Реєстрація</Text>
+				<TextInput style={styles.input} placeholder='Логін' value={text} onChangeText={setText} />
+				<TextInput style={styles.input} placeholder='Адреса електронної пошти' value={text} onChangeText={setText} />
+				<TextInput style={styles.input} placeholder='Пароль' secureTextEntry value={text} onChangeText={setText} />
+				<TouchableOpacity style={styles.button}>
+					<Text style={styles.buttonText}>Зареєструватися</Text>
+				</TouchableOpacity>
+				<Text style={styles.span}>Вже є акаунт? Увійти</Text>
+			</View>
+		</KeyboardAvoidingView>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	innerContainer: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: 25,
@@ -27,11 +34,10 @@ const styles = StyleSheet.create({
 	heading: {
 		color: '#212121',
 		textAlign: 'center',
-		fontFamily: 'Roboto',
+		// fontFamily: 'Roboto_Regular',
 		fontSize: 30,
 		fontStyle: 'normal',
 		fontWeight: 500,
-		lineHeight: 'normal',
 		letterSpacing: 0.3,
 		marginBottom: 33,
 	},

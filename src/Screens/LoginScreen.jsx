@@ -1,22 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 
 export default LoginScreen = () => {
+	const [text, setText] = useState('')
 	return (
-		<View style={styles.container}>
-			<Text style={styles.heading}> Увійти </Text>
-			<TextInput style={styles.input} placeholder='Адреса електронної пошти' />
-			<TextInput style={styles.input} placeholder='Пароль' secureTextEntry />
-			<TouchableOpacity style={styles.button}>
-				<Text style={styles.buttonText}>Увійти</Text>
-			</TouchableOpacity>
-			<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
-		</View>
+		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+			<View style={styles.innerContainer}>
+				<Text style={styles.heading}> Увійти </Text>
+				<TextInput style={styles.input} placeholder='Адреса електронної пошти' value={text} onChangeText={setText} />
+				<TextInput style={styles.input} placeholder='Пароль' secureTextEntry value={text} onChangeText={setText} />
+				<TouchableOpacity style={styles.button}>
+					<Text style={styles.buttonText}>Увійти</Text>
+				</TouchableOpacity>
+				<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
+			</View>
+		</KeyboardAvoidingView>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	innerContainer: {
 		height: 489,
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -26,11 +33,10 @@ const styles = StyleSheet.create({
 	heading: {
 		color: '#212121',
 		textAlign: 'center',
-		fontFamily: 'Roboto',
+		// fontFamily: 'Roboto_Regular',
 		fontSize: 30,
 		fontStyle: 'normal',
 		fontWeight: 500,
-		lineHeight: 'normal',
 		letterSpacing: 0.3,
 		marginBottom: 33,
 	},
