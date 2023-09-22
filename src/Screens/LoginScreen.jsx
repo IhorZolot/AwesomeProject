@@ -10,12 +10,22 @@ import {
 	Keyboard,
 } from 'react-native'
 
-export default LoginScreen = () => {
+const users = [
+	{ id: 1, email: 'user1@example.com', password: 'password1' },
+	{ id: 2, email: 'user2@example.com', password: 'password2' },
+]
+
+export default LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const handleLogin = () => {
-		console.log('Email:', email)
-		console.log('Password:', password)
+
+	const handleLogin = async () => {
+		const user = users.find(u => u.email === '' && u.password === '')
+		if (user) {
+			navigation.navigate('Home')
+		} else {
+			setError('Невірний пароль або електронна пошта')
+		}
 	}
 
 	return (
@@ -39,7 +49,9 @@ export default LoginScreen = () => {
 					<TouchableOpacity style={styles.button} onPress={handleLogin}>
 						<Text style={styles.buttonText}>Увійти</Text>
 					</TouchableOpacity>
-					<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
+					<TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+						<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
+					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
@@ -55,13 +67,16 @@ const styles = StyleSheet.create({
 		height: 489,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 25,
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0,
 		backgroundColor: '#ffffff',
 	},
 	heading: {
 		color: '#212121',
 		textAlign: 'center',
-		// fontFamily: 'Roboto_Regular',
+		// fontFamily: 'Roboto-Regular',
 		fontSize: 30,
 		fontStyle: 'normal',
 		fontWeight: 500,

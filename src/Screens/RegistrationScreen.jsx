@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import {
 	View,
 	Text,
@@ -10,20 +11,29 @@ import {
 	Keyboard,
 } from 'react-native'
 
-export default function RegistrationScreen() {
+const initialUsers = []
+
+export default function RegistrationScreen({ navigation }) {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [error, setError] = useState('')
+	const [users, setUsers] = useState(initialUsers)
 
 	const handleRegistration = () => {
-		console.log('Name:', name)
-		console.log('Email:', email)
-		console.log('Password:', password)
+		const userExists = users.some(u => u.email === email)
+		if (userExists) {
+			setError('Користувач з такою електронною поштою вже існує')
+		} else {
+			const newUser = { id: users.length + 1, email, password }
+			setUsers([...users, newUser])
+			navigation.navigate('Home')
+		}
 	}
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
 				<View style={styles.innerContainer}>
 					<Text style={styles.heading}>Реєстрація</Text>
 					<TextInput style={styles.input} placeholder='Логін' value={name} onChangeText={setName} />
@@ -43,7 +53,9 @@ export default function RegistrationScreen() {
 					<TouchableOpacity style={styles.button} onPress={handleRegistration}>
 						<Text style={styles.buttonText}>Зареєструватися</Text>
 					</TouchableOpacity>
-					<Text style={styles.span}>Вже є акаунт? Увійти</Text>
+					<TouchableOpacity onPress={() => navigation.navigate('Login')}>
+						<Text style={styles.span}>Вже є акаунт? Увійти</Text>
+					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
@@ -58,14 +70,17 @@ const styles = StyleSheet.create({
 	innerContainer: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 25,
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0,
 		backgroundColor: '#ffffff',
 		height: 549,
 	},
 	heading: {
 		color: '#212121',
 		textAlign: 'center',
-		// fontFamily: 'Roboto_Regular',
+		// fontFamily: 'Roboto-Regular',
 		fontSize: 30,
 		fontStyle: 'normal',
 		fontWeight: 500,

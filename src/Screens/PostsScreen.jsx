@@ -1,9 +1,15 @@
-// src/Screens/PostsScreen.js
-
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
-export default PostsScreen = () => {
+export default function PostsScreen() {
+	const navigation = useNavigation()
+
+	// const handleLogout = () => {
+	// 	navigation.navigate('Login')
+	// }
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.heading}>Posts</Text>
@@ -21,5 +27,18 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		marginBottom: 20,
+	},
+	logoutButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: 'red',
+		padding: 10,
+		borderRadius: 5,
+		marginTop: 20,
+	},
+	logoutText: {
+		fontSize: 18,
+		color: 'white',
+		marginLeft: 10,
 	},
 })
