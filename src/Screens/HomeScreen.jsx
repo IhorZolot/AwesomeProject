@@ -1,10 +1,15 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { View, StyleSheet, Button } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { SvgXml } from 'react-native-svg'
+
 import PostsScreen from './PostsScreen'
 import ProfileScreen from './ProfileScreen'
 
-const handleLogout = async () => {
+import GridPosts from '../Image/gridposts.svg'
+import User from '../Image/user.svg'
+
+const handleLogout = navigation => {
 	try {
 		navigation.navigate('Login')
 	} catch (error) {
@@ -25,7 +30,16 @@ export default function HomeScreen({ navigation }) {
 					fontWeight: 'bold',
 					fontSize: 20,
 				},
-				headerRight: () => <Button onPress={() => handleLogout()} title='Logout' color='black' />,
+				headerRight: () => <Button onPress={() => handleLogout(navigation)} title='Logout' color='black' />,
+				// tabBarIcon: ({ focused, color, size }) => {
+				// 	let iconName
+				// 	if (route.name === 'PostsScreen') {
+				// 		iconName = <SvgXml xml={GridPosts} width={24} height={24} fill={color} />
+				// 	} else if (route.name === 'ProfileScreen') {
+				// 		iconName = <SvgXml xml={User} width={24} height={24} fill={color} />
+				// 	}
+				// 	return iconName
+				// },
 			})}
 		>
 			<Tabs.Screen options={{ headerTitle: 'Публікації' }} name='PostsScreen' component={PostsScreen} />
@@ -56,13 +70,3 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 })
-
-// tabBarIcon: ({ focused, color, size }) => {
-// 	let iconName
-// 	if (route.name === 'ProfileScreen') {
-// 		iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'
-// 	} else if (route.name === 'PostsScreen') {
-// 		iconName = focused ? 'ios-list-box' : 'ios-list'
-// 	}
-// 	return <Ionicons name={iconName} size={size} color={color} />
-// },
