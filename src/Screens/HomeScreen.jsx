@@ -5,9 +5,8 @@ import { SvgXml } from 'react-native-svg'
 
 import PostsScreen from './PostsScreen'
 import ProfileScreen from './ProfileScreen'
-
-import GridPosts from '../Image/gridposts.svg'
-import User from '../Image/user.svg'
+import GridPosts from '../Image/GridPosts'
+import IconUser from '../Image/IconUser'
 
 const handleLogout = navigation => {
 	try {
@@ -31,12 +30,12 @@ export default function HomeScreen({ navigation }) {
 					fontSize: 20,
 				},
 				headerRight: () => <Button onPress={() => handleLogout(navigation)} title='Logout' color='black' />,
-				// tabBarIcon: ({ focused, color, size }) => {
+				// tabBarIcon: ({ color, size }) => {
 				// 	let iconName
 				// 	if (route.name === 'PostsScreen') {
-				// 		iconName = <SvgXml xml={GridPosts} width={24} height={24} fill={color} />
+				// 		iconName = <SvgXml xml={GridPosts} />
 				// 	} else if (route.name === 'ProfileScreen') {
-				// 		iconName = <SvgXml xml={User} width={24} height={24} fill={color} />
+				// 		iconName = <SvgXml xml={IconUser} />
 				// 	}
 				// 	return iconName
 				// },
@@ -58,15 +57,15 @@ export default function HomeScreen({ navigation }) {
 	)
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	heading: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		marginBottom: 20,
-	},
-})
+// const styles = StyleSheet.create({
+// 	container: {
+// 		flex: 1,
+// 		justifyContent: 'center',
+// 		alignItems: 'center',
+// 	},
+// 	heading: {
+// 		fontSize: 24,
+// 		fontWeight: 'bold',
+// 		marginBottom: 20,
+// 	},
+// })

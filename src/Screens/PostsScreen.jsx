@@ -6,10 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 export default function PostsScreen() {
 	const navigation = useNavigation()
 
-	// const handleLogout = () => {
-	// 	navigation.navigate('Login')
-	// }
-
 	return (
 		<View style={styles.container}>
 			<Text style={styles.heading}>Posts</Text>
