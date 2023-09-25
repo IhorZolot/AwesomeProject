@@ -1,12 +1,17 @@
 import React, { useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import CameraComponent from "./CameraComponent"; 
+import { useNavigation,  useRoute } from '@react-navigation/native'
 
 export default function CreatePostsScreen() {
 	const [photoName, setPhotoName] = useState(""); 
 	const [photoUri, setPhotoUri] = useState(null);
   const [locationName, setLocationName] = useState("");
+  const [isButtonActive, setIsButtonActive] = useState(false);
   const [coords, setCoords] = useState(null);
+	const navigation = useNavigation()
+ 
+
 
   const handlePictureTaken = async (uri) => {
     setPhotoUri(uri);
@@ -19,13 +24,29 @@ export default function CreatePostsScreen() {
   };
 
 	const handlePhotoNameChange = (text) => {
-    setPhotoName(text); 
+    setPhotoName(text);
+    updateButtonActivity(text, locationName); 
   };
   const handleLocationNameChange = (text) => {
-    setLocationName(text); 
+    setLocationName(text);
+    updateButtonActivity(photoName, text); 
+  };
+  const updateButtonActivity = (name, location) => {
+    const isAnyFieldFilled = name.trim() !== "" || location.trim() !== "";
+    setIsButtonActive(isAnyFieldFilled);
   };
   const publishPost = () => {
-		// getLocation();
+		navigation.navigate('PostsScreen', { 
+			photoUri,
+			photoName,
+			locationName,
+		}); 
+	};
+  const clearForm = () => {
+    setPhotoName("");
+    setLocationName("");
+    setPhotoUri(null);
+    setIsButtonActive(false);
   };
 
   return (
@@ -55,12 +76,23 @@ export default function CreatePostsScreen() {
         />
       </View>
       <View  style={styles.buttonContainer} >
-      <TouchableOpacity style={styles.publishButton} onPress={publishPost}>
-        <Text style={styles.buttonText}>Опублікувати</Text>
-      </TouchableOpacity>
-			<TouchableOpacity style={styles.publishDelButton} >
-        <Text style={styles.buttonText}>Del</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  style={[
+    styles.publishButton,
+    {
+      backgroundColor: isButtonActive ? "#FF6C00" : "#f4f1eed2",
+    },
+  ]}
+  onPress={publishPost}
+  disabled={!isButtonActive}
+>
+  <Text style={[styles.buttonText, { color: isButtonActive ? "white" : "#BDBDBD" }]}>
+    Опублікувати
+  </Text>
+</TouchableOpacity>
+<TouchableOpacity style={styles.publishDelButton} onPress={clearForm} >
+          <Text style={styles.buttonText}>Del</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

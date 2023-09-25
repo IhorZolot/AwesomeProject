@@ -1,29 +1,56 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
-export default function PostsScreen() {
-	const navigation = useNavigation()
-
-	return (
+export default function PostsScreen({ route }) {
+  const { photoUri, photoName, locationName } = route.params;
+	console.log(route.params)
+  const navigation = useNavigation()
+  return (
 		<View style={styles.container}>
-			<Text style={styles.heading}>Posts</Text>
-		</View>
+      <Image source={{ uri: photoUri }} style={styles.photo} />
+      <Text style={styles.name}>{photoName}</Text>
+      <View style={styles.localContainer}>
+      <TouchableOpacity
+        style={styles.commentButton}
+        onPress={() => navigation.navigate('Comments')}
+      > 
+      <Text>+</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.commentButton}
+        onPress={() => navigation.navigate('Map')}
+      >
+        <Text>#</Text>
+      </TouchableOpacity>
+      <Text style={styles.location}>{locationName}</Text>
+      </View>
+    </View>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	heading: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		marginBottom: 20,
-	},
+    flex: 1,
+    alignItems: 'left',
+   marginTop: 20,
+    marginLeft: 20,
+  },
+	photo: {
+    width: 200, 
+    height: 200, 
+    resizeMode: 'cover', 
+    borderRadius: 10, 
+  },
+	name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  location: {
+    fontSize: 16,
+    color: '#888',
+  },
 	logoutButton: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -37,4 +64,22 @@ const styles = StyleSheet.create({
 		color: 'white',
 		marginLeft: 10,
 	},
+  localContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  
+  commentButton: {
+    backgroundColor: '#ffffff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 100,
+    marginLeft: 10, 
+  },
+  commentButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
 })
