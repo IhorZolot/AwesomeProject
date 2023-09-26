@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Button } from 'react-native'
+import { View, Button } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import PostsScreen from './PostsScreen'

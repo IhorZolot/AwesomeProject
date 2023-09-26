@@ -1,20 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import SvgLocation from '../Image/SvgLocation';
 import SvgComment from '../Image/SvgComment';
+import { useSelector } from 'react-redux';
 
-
-export default function PostsScreen({ route }) {
-  const { photoUri, photoName, locationName } = route;
-	console.log(route.params)
+export default function PostsScreen() {
+  const posts = useSelector((state) => state.posts.posts);
   const navigation = useNavigation()
+ 
   return (
 		<View style={styles.container}>
-      <Image source={{ uri: photoUri }} style={styles.photo} />
-      <Text style={styles.name}>{photoName}</Text>
+      {posts.map((post, index) => (
+        <View key={index} style={styles.card}>
+        <Image source={{ uri: post.photoUri }} style={styles.photo} />
+        <Text style={styles.name}>{post.photoName}</Text>
       <View style={styles.localContainer}>
-      <TouchableOpacity
+        <TouchableOpacity
         style={styles.commentButton}
         onPress={() => navigation.navigate('Comments')}
       > 
@@ -26,9 +28,11 @@ export default function PostsScreen({ route }) {
       >
         <SvgLocation />
       </TouchableOpacity>
-      <Text style={styles.location}>{locationName}</Text>
+      <Text style={styles.location}>{post.locationName}</Text>
       </View>
-    </View>
+      </View>
+      ))}
+      </View>
 	)
 }
 
@@ -40,14 +44,14 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 	photo: {
-    width: 200, 
+    width: 350, 
     height: 200, 
     resizeMode: 'cover', 
-    borderRadius: 10, 
+    borderRadius: 8, 
   },
 	name: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#BDBDBD',
     marginVertical: 10,
   },
   location: {
@@ -70,7 +74,7 @@ const styles = StyleSheet.create({
   localContainer: {
     flexDirection: 'row', 
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 10,
   },
   
   commentButton: {

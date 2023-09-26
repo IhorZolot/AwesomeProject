@@ -1,28 +1,37 @@
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import CameraComponent from "./CameraComponent"; 
-import { useNavigation,  useRoute } from '@react-navigation/native'
 import SvgTrash from '../Image/SvgTrash';
 import SvgLocation from '../Image/SvgLocation';
+import { useDispatch } from 'react-redux';
+import { addPost } from '../redux/postsSlice';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CreatePostsScreen() {
 	const [photoName, setPhotoName] = useState(""); 
 	const [photoUri, setPhotoUri] = useState(null);
   const [locationName, setLocationName] = useState("");
   const [isButtonActive, setIsButtonActive] = useState(false);
-  const [coords, setCoords] = useState(null);
-	const navigation = useNavigation()
- 
-
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  
 
   const handlePictureTaken = async (uri) => {
     setPhotoUri(uri);
     console.log("Посилання на фото:", uri);
-    // try {
-    //   await MediaLibrary.createAssetAsync(uri);
-    // } catch (error) {
-    //   console.error("Помилка під час збереження фотографії:", error);
-    // }
+  };
+  
+  const publishPost = () => {
+    if (photoUri || photoName || locationName) {
+      const newPost = {
+        photoName,
+        photoUri,
+        locationName,
+      };
+      dispatch(addPost(newPost)); 
+      clearForm();
+      navigation.navigate('PostsScreen');;
+    }
   };
 
 	const handlePhotoNameChange = (text) => {
@@ -37,13 +46,7 @@ export default function CreatePostsScreen() {
     const isAnyFieldFilled = name.trim() !== "" || location.trim() !== "";
     setIsButtonActive(isAnyFieldFilled);
   };
-  const publishPost = () => {
-		navigation.navigate('PostsScreen', { 
-			photoUri,
-			photoName,
-			locationName,
-		}); 
-	};
+  
   const clearForm = () => {
     setPhotoName("");
     setLocationName("");
