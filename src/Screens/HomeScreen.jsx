@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, Button } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { SvgXml } from 'react-native-svg'
 
 import PostsScreen from './PostsScreen'
 import ProfileScreen from './ProfileScreen'
-import GridPosts from '../Image/GridPosts'
-import IconUser from '../Image/IconUser'
+import SvgGridPosts from '../Image/SvgGridPosts'
+import SvgIconUser from '../Image/SvgIconUser'
+import SvgLogOut from '../Image/SvgLogOut'
+import SvgNewPost from '../Image/SvgNewPost'
 
 const handleLogout = navigation => {
 	try {
@@ -29,16 +30,20 @@ export default function HomeScreen({ navigation }) {
 					fontWeight: 'bold',
 					fontSize: 20,
 				},
-				headerRight: () => <Button onPress={() => handleLogout(navigation)} title='Logout' color='black' />,
-				// tabBarIcon: ({ color, size }) => {
-				// 	let iconName
-				// 	if (route.name === 'PostsScreen') {
-				// 		iconName = <SvgXml xml={GridPosts} />
-				// 	} else if (route.name === 'ProfileScreen') {
-				// 		iconName = <SvgXml xml={IconUser} />
-				// 	}
-				// 	return iconName
-				// },
+				headerRight: () =>	<Button onPress={() => handleLogout(navigation)} title="Logout" color="black">
+					<SvgLogOut />
+	        	</Button>,
+				tabBarIcon: () => {
+					let iconName
+					if (route.name === 'PostsScreen') {
+						iconName = <SvgGridPosts/>
+					} if (route.name === 'ProfileScreen') {
+						iconName = <SvgIconUser/>
+					} if (route.name === 'CreatePost') {
+						iconName = <SvgNewPost />
+					}
+					return iconName
+				},
 			})}
 		>
 			<Tabs.Screen options={{ headerTitle: 'Публікації' }} name='PostsScreen' component={PostsScreen} />

@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import CameraComponent from "./CameraComponent"; 
 import { useNavigation,  useRoute } from '@react-navigation/native'
+import SvgTrash from '../Image/SvgTrash';
+import SvgLocation from '../Image/SvgLocation';
 
 export default function CreatePostsScreen() {
 	const [photoName, setPhotoName] = useState(""); 
@@ -67,6 +69,7 @@ export default function CreatePostsScreen() {
       </View>
 
       <View style={styles.inputContainer}>
+        <SvgLocation />
         <TextInput
           style={styles.input}
           placeholder="Місцевість..."
@@ -91,7 +94,7 @@ export default function CreatePostsScreen() {
   </Text>
 </TouchableOpacity>
 <TouchableOpacity style={styles.publishDelButton} onPress={clearForm} >
-          <Text style={styles.buttonText}>Del</Text>
+          <SvgTrash />
         </TouchableOpacity>
       </View>
     </View>
@@ -121,10 +124,9 @@ const styles = StyleSheet.create({
   },
 	inputContainer: {
     display: 'flex',
+    flexDirection: 'row', 
     width: 343,
     paddingTop: 16,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
     alignItems: 'flex-start',
     borderBottomWidth: 1,
     borderBottomColor: '#BDBDBD',
@@ -147,7 +149,6 @@ const styles = StyleSheet.create({
 		padding: 16,
 		backgroundColor: '#f4f1eed2',
 		marginTop: 27,
-    flexDirection: 'column',
     alignItems: 'center',
     gap: 12,
     borderRadius: 100,
@@ -159,6 +160,7 @@ const styles = StyleSheet.create({
     marginTop: 200, 
     marginBottom:40,
     justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#F6F6F6',
 
   },

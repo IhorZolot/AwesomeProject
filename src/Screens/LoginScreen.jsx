@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import {
 	View,
 	Text,
+	Keyboard,
 	TextInput,
-	TouchableOpacity,
 	StyleSheet,
+	ImageBackground,
+	TouchableOpacity,
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
-	Keyboard,
 } from 'react-native'
+import SvgAddPhoto from '../Image/SvgAddPhoto'
 
 const users = [
 	{ id: 1, email: 'user1@example.com', password: 'password1' },
@@ -31,7 +33,11 @@ export default LoginScreen = ({ navigation }) => {
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
+			<ImageBackground source={require('../Image/BG.png')} resizeMode='cover' style={styles.image}>
 				<View style={styles.innerContainer}>
+				<View style={styles.SvgAddPhoto}>
+					<SvgAddPhoto />
+					</View>
 					<Text style={styles.heading}> Увійти </Text>
 					<TextInput
 						style={styles.input}
@@ -53,6 +59,7 @@ export default LoginScreen = ({ navigation }) => {
 						<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
 					</TouchableOpacity>
 				</View>
+				</ImageBackground>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	)
@@ -60,6 +67,10 @@ export default LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	image: {
 		flex: 1,
 		justifyContent: 'flex-end',
 	},
@@ -72,6 +83,10 @@ const styles = StyleSheet.create({
 		borderBottomLeftRadius: 0,
 		borderBottomRightRadius: 0,
 		backgroundColor: '#ffffff',
+	},
+	SvgAddPhoto:{
+		position: 'absolute',
+		top: -60,
 	},
 	heading: {
 		color: '#212121',
@@ -107,4 +122,5 @@ const styles = StyleSheet.create({
 	span: {
 		marginTop: 20,
 	},
+	
 })

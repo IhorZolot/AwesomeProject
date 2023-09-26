@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
 import {
 	View,
 	Text,
 	TextInput,
 	StyleSheet,
+	ImageBackground,
 	TouchableOpacity,
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 	Keyboard,
 } from 'react-native'
+import SvgAddPhoto from '../Image/SvgAddPhoto'
 
 const initialUsers = []
 
@@ -34,7 +35,11 @@ export default function RegistrationScreen({ navigation }) {
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+				<ImageBackground source={require('../Image/BG.png')} resizeMode='cover' style={styles.image}>
 				<View style={styles.innerContainer}>
+					<View style={styles.SvgAddPhoto}>
+					<SvgAddPhoto />
+					</View>
 					<Text style={styles.heading}>Реєстрація</Text>
 					<TextInput style={styles.input} placeholder='Логін' value={name} onChangeText={setName} />
 					<TextInput
@@ -57,8 +62,10 @@ export default function RegistrationScreen({ navigation }) {
 						<Text style={styles.span}>Вже є акаунт? Увійти</Text>
 					</TouchableOpacity>
 				</View>
+				</ImageBackground>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
+	
 	)
 }
 
@@ -76,6 +83,10 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 0,
 		backgroundColor: '#ffffff',
 		height: 549,
+	},
+	SvgAddPhoto:{
+		position: 'absolute',
+		top: -60,
 	},
 	heading: {
 		color: '#212121',
@@ -110,5 +121,9 @@ const styles = StyleSheet.create({
 	},
 	span: {
 		marginTop: 20,
+	},
+	image: {
+		flex: 1,
+		justifyContent: 'flex-end',
 	},
 })

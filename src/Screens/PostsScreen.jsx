@@ -1,9 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import SvgLocation from '../Image/SvgLocation';
+import SvgComment from '../Image/SvgComment';
+
 
 export default function PostsScreen({ route }) {
-  const { photoUri, photoName, locationName } = route.params;
+  const { photoUri, photoName, locationName } = route;
 	console.log(route.params)
   const navigation = useNavigation()
   return (
@@ -15,13 +18,13 @@ export default function PostsScreen({ route }) {
         style={styles.commentButton}
         onPress={() => navigation.navigate('Comments')}
       > 
-      <Text>+</Text>
+       <SvgComment />
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.commentButton}
+      style={styles.mapButton}
         onPress={() => navigation.navigate('Map')}
       >
-        <Text>#</Text>
+        <SvgLocation />
       </TouchableOpacity>
       <Text style={styles.location}>{locationName}</Text>
       </View>
@@ -71,15 +74,10 @@ const styles = StyleSheet.create({
   },
   
   commentButton: {
-    backgroundColor: '#ffffff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 100,
+    marginRight: 64,
     marginLeft: 10, 
   },
-  commentButtonText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
+  mapButton: {
+    marginRight: 4,
   },
 })

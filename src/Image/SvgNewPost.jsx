@@ -1,6 +1,6 @@
 import * as React from "react"
 import Svg, { G, Rect, Path, Defs, ClipPath } from "react-native-svg"
-const SvgNewPost = (props) => (
+export const SvgNewPost = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={70}

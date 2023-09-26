@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
-import { ImageBackground, StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -11,6 +11,9 @@ import HomeScreen from './src/Screens/HomeScreen'
 import MapScreen from './src/Screens/MapScreen'
 import CreatePostScreen from './src/Screens/CreatePostsScreen'
 import CommentsScreen from './src/Screens/CommentsScreen'
+import { Provider } from 'react-redux'
+import store from './src/redux/store'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 
 const Stack = createStackNavigator()
 
@@ -52,11 +55,14 @@ export default function App() {
 		)
 	}
 	return (
-		<View style={styles.container}>
-			<ImageBackground source={require('./src/Image/BG.png')} resizeMode='cover' style={styles.image}>
-				<NavigationContainer>{!isAuth ? <HomeNavigator /> : <AuthNavigator />}</NavigationContainer>
-			</ImageBackground>
-		</View>
+		<Provider store={store}>
+			<PersistGate loading={<Text>Loading...</Text>}
+        persistor={store.persistor}>
+			<NavigationContainer>{!isAuth ? <HomeNavigator /> : <AuthNavigator />}</NavigationContainer>
+			</PersistGate>
+		</Provider>
+		
+				
 	)
 }
 
