@@ -54,6 +54,54 @@ export default function CreatePostsScreen() {
     setIsButtonActive(false);
   };
 
+  // const uploadImg = async () => {
+  //   try {
+  //     const response = await fetch(img);
+  //     const file = await response.blob();
+  //     await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
+  //     const photoUrl = await getDownloadURL(
+  //       ref(storage, `photos/${file._data.blobId}`)
+  //     );
+  //     return photoUrl;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const uploadPost = async () => {
+  //   try {
+  //     const img = await uploadImg();
+  //     await addDoc(collection(db, "posts"), {
+  //       userId,
+  //       nickname,
+  //       img,
+  //       title,
+  //       location,
+  //       coords: coords.coords,
+  //       date: Date.now().toString(),
+  //       country,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const handleSharePost = () => {
+  //   if (!img || !title || !location) {
+  //     return Alert.alert("Fill in all fields");
+  //   }
+  //   getLocation();
+  //   uploadPost();
+  //   navigation.navigate("InitialPostsScreen");
+  //   reset();
+  // };
+  // function reset() {
+  //   setImg(null);
+  //   setTitle("");
+  //   setLocation(null);
+  // }
+
+
   return (
     <View style={styles.container}>
         <View style={styles.photoContainer}>

@@ -2,38 +2,12 @@ import React, { useEffect, useState } from 'react'
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { StyleSheet, View, Text } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import CreatePostsScreen from './src/Screens/CreatePostsScreen'
-import RegistrationScreen from './src/Screens/RegistrationScreen'
-import LoginScreen from './src/Screens/LoginScreen'
-import HomeScreen from './src/Screens/HomeScreen'
-import MapScreen from './src/Screens/MapScreen'
-import CommentsScreen from './src/Screens/CommentsScreen'
-import { Provider } from 'react-redux'
-import { store } from './src/redux/store';
+import { Provider, useSelector } from 'react-redux'
+import {store, persistor} from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
-
-const Stack = createStackNavigator()
-
-const AuthNavigator = () => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
-		<Stack.Screen name='Login' component={LoginScreen} />
-		<Stack.Screen name='Registration' component={RegistrationScreen} />
-	</Stack.Navigator>
-)
-
-const HomeNavigator = () => (
-	<Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='HomeScreen'>
-		<Stack.Screen name='Home' component={HomeScreen} />
-		<Stack.Screen name='Map' component={MapScreen} options={{ headerShown: true }} />
-		<Stack.Screen name='CreatePost' component={CreatePostsScreen} options={{ headerShown: true }} />
-		<Stack.Screen name='Comments' component={CommentsScreen} options={{ headerShown: true }} />
-	</Stack.Navigator>
-)
+import { RootNavigation } from './src/RootNavigation'
 
 export default function App() {
-	const [isAuth, setIsAuth] = useState(false)
 	const [fontsLoaded, setFontsLoaded] = useState(false)
 
 	useEffect(() => {
@@ -46,6 +20,7 @@ export default function App() {
 		}
 		loadFonts()
 	}, [])
+
 	if (!fontsLoaded) {
 		return (
 			<View style={styles.loadingContainer}>
@@ -55,15 +30,13 @@ export default function App() {
 	}
 	return (
 		<Provider store={store}>
-			{/* <PersistGate
-        loading={<Text>Loading...</Text>}
-        persistor={store.persistor}
-      >  */}
-			<NavigationContainer>{!isAuth ? <HomeNavigator /> : <AuthNavigator />}</NavigationContainer>
-		{/* </PersistGate>  */}
+			<PersistGate
+        loading={ <Text>Loading content...</Text> }
+        persistor={persistor}
+      > 
+			<RootNavigation />
+		</PersistGate> 
 		</Provider>
-		
-				
 	)
 }
 

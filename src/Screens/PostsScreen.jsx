@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import SvgLocation from '../Image/SvgLocation';
 import SvgComment from '../Image/SvgComment';
 import { useSelector } from 'react-redux';
@@ -10,8 +10,8 @@ export default function PostsScreen() {
   const navigation = useNavigation()
  
   return (
-		<View style={styles.container}>
-      {posts.map((post, index) => (
+		<ScrollView contentContainerStyle={styles.container}>
+      {posts && posts.map((post, index) => (
         <View key={index} style={styles.card}>
         <Image source={{ uri: post.photoUri }} style={styles.photo} />
         <Text style={styles.name}>{post.photoName}</Text>
@@ -32,7 +32,7 @@ export default function PostsScreen() {
       </View>
       </View>
       ))}
-      </View>
+      </ScrollView>
 	)
 }
 

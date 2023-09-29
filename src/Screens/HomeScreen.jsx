@@ -8,17 +8,14 @@ import SvgGridPosts from '../Image/SvgGridPosts'
 import SvgIconUser from '../Image/SvgIconUser'
 import SvgLogOut from '../Image/SvgLogOut'
 import SvgNewPost from '../Image/SvgNewPost'
+import { authActions } from '../redux/authSlice'
+import { useDispatch } from 'react-redux'
 
-const handleLogout = navigation => {
-	try {
-		navigation.navigate('Login')
-	} catch (error) {
-		console.error('Помилка при логауті:', error)
-	}
-}
 const Tabs = createBottomTabNavigator()
 
 export default function HomeScreen({ navigation }) {
+	const dispatch = useDispatch()
+
 	return (
 		<Tabs.Navigator
 			screenOptions={({ route }) => ({
@@ -30,7 +27,7 @@ export default function HomeScreen({ navigation }) {
 					fontWeight: 'bold',
 					fontSize: 20,
 				},
-				headerRight: () =>	<Button onPress={() => handleLogout(navigation)} title="Logout" color="black">
+				headerRight: () =>	<Button onPress={()=> dispatch(authActions.resetUser())} title="Logout" color="black">
 					<SvgLogOut />
 	        	</Button>,
 				tabBarIcon: () => {

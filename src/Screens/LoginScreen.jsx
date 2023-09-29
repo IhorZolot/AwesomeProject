@@ -10,55 +10,58 @@ import {
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 } from 'react-native'
+import { useDispatch } from 'react-redux'
 import SvgAddPhoto from '../Image/SvgAddPhoto'
+import { authLoginUser } from '../redux/operations'
+import { useNavigation } from '@react-navigation/native';
 
-const users = [
-	{ id: 1, email: 'user1@example.com', password: 'password1' },
-	{ id: 2, email: 'user2@example.com', password: 'password2' },
-]
+export default function LoginScreen  ()  {
+	const [email, setEmail] = useState('fedonn@ukr.net')
+	const [password, setPassword] = useState('amsterdam')
+	const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-export default LoginScreen = ({ navigation }) => {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-
-	const handleLogin = async () => {
-		const user = users.find(u => u.email === '' && u.password === '')
-		if (user) {
-			navigation.navigate('Home')
-		} else {
-			setError('Невірний пароль або електронна пошта')
-		}
+	const handleLogin = () => {
+			if (!email || !password) {
+				return alert('Будь ласка, заповніть всі поля')
+			}
+		  dispatch(authLoginUser({ email, password }))
+			resetForm()
+	}
+	function resetForm() {
+		setEmail('')
+		setPassword('')
 	}
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} enabled>
-			<ImageBackground source={require('../Image/BG.png')} resizeMode='cover' style={styles.image}>
-				<View style={styles.innerContainer}>
-				<View style={styles.SvgAddPhoto}>
-					<SvgAddPhoto />
+				<ImageBackground source={require('../Image/BG.png')} resizeMode='cover' style={styles.image}>
+					<View style={styles.innerContainer}>
+						<View style={styles.SvgAddPhoto}>
+							<SvgAddPhoto />
+						</View>
+						<Text style={styles.heading}> Увійти </Text>
+						<TextInput
+							style={styles.input}
+							value={email}
+							placeholder="Адреса електронної пошти"
+							onChangeText={(text) => setEmail(text)}
+						/>
+						<TextInput
+							style={styles.input}
+							secureTextEntry
+							value={password}
+                    placeholder="Пароль"
+                    onChangeText={(text) => setPassword(text)}
+						/>
+						<TouchableOpacity style={styles.button} onPress={handleLogin}>
+							<Text style={styles.buttonText}>Увійти</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+							<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
+						</TouchableOpacity>
 					</View>
-					<Text style={styles.heading}> Увійти </Text>
-					<TextInput
-						style={styles.input}
-						placeholder='Адреса електронної пошти'
-						value={email}
-						onChangeText={setEmail}
-					/>
-					<TextInput
-						style={styles.input}
-						placeholder='Пароль'
-						secureTextEntry
-						value={password}
-						onChangeText={setPassword}
-					/>
-					<TouchableOpacity style={styles.button} onPress={handleLogin}>
-						<Text style={styles.buttonText}>Увійти</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => navigation.navigate('Registration')}>
-						<Text style={styles.span}>Немає акаунту? Зареєструватися</Text>
-					</TouchableOpacity>
-				</View>
 				</ImageBackground>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 0,
 		backgroundColor: '#ffffff',
 	},
-	SvgAddPhoto:{
+	SvgAddPhoto: {
 		position: 'absolute',
 		top: -60,
 	},
@@ -122,5 +125,4 @@ const styles = StyleSheet.create({
 	span: {
 		marginTop: 20,
 	},
-	
 })

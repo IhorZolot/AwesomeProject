@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
 	View,
 	Text,
@@ -11,61 +12,67 @@ import {
 	Keyboard,
 } from 'react-native'
 import SvgAddPhoto from '../Image/SvgAddPhoto'
+import { authSignUpUser } from '../redux/operations'
+import { useNavigation } from '@react-navigation/native'
 
-const initialUsers = []
-
-export default function RegistrationScreen({ navigation }) {
-	const [name, setName] = useState('')
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [error, setError] = useState('')
-	const [users, setUsers] = useState(initialUsers)
+export default function RegistrationScreen() {
+	const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("@gmail.com");
+  const [password, setPassword] = useState("qwertyqwerty");
+	const dispatch = useDispatch()
+	const navigation = useNavigation();
 
 	const handleRegistration = () => {
-		const userExists = users.some(u => u.email === email)
-		if (userExists) {
-			setError('Користувач з такою електронною поштою вже існує')
-		} else {
-			const newUser = { id: users.length + 1, email, password }
-			setUsers([...users, newUser])
-			navigation.navigate('Home')
+		if ( !email || !password) {
+			return alert('Будь ласка, заповніть всі поля')
 		}
+		dispatch(authSignUpUser({ email, password }))
+		resetForm()
 	}
+	function resetForm() {
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  }
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView style={styles.container} behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
 				<ImageBackground source={require('../Image/BG.png')} resizeMode='cover' style={styles.image}>
-				<View style={styles.innerContainer}>
-					<View style={styles.SvgAddPhoto}>
-					<SvgAddPhoto />
+					<View style={styles.innerContainer}>
+						<View style={styles.SvgAddPhoto}>
+							<SvgAddPhoto />
+						</View>
+						<Text style={styles.heading}>Реєстрація</Text>
+						<TextInput
+							style={styles.input}
+							placeholder='Логін'
+							value={login}
+							onChangeText={(text) => setLogin(text)}
+						/>
+						<TextInput
+							style={styles.input}
+							value={email}
+                  placeholder="Адреса електронної пошти"
+                  onChangeText={(text) => setEmail(text)}
+						/>
+						<TextInput
+							style={styles.input}
+							secureTextEntry
+							value={password}
+                    placeholder="Пароль"
+                    onChangeText={(text) => setPassword(text)}
+						/>
+						<TouchableOpacity style={styles.button} onPress={handleRegistration}>
+							<Text style={styles.buttonText}>Зареєструватися</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigation.navigate('Login')}>
+							<Text style={styles.span}>Вже є акаунт? Увійти</Text>
+						</TouchableOpacity>
 					</View>
-					<Text style={styles.heading}>Реєстрація</Text>
-					<TextInput style={styles.input} placeholder='Логін' value={name} onChangeText={setName} />
-					<TextInput
-						style={styles.input}
-						placeholder='Адреса електронної пошти'
-						value={email}
-						onChangeText={setEmail}
-					/>
-					<TextInput
-						style={styles.input}
-						placeholder='Пароль'
-						secureTextEntry
-						value={password}
-						onChangeText={setPassword}
-					/>
-					<TouchableOpacity style={styles.button} onPress={handleRegistration}>
-						<Text style={styles.buttonText}>Зареєструватися</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => navigation.navigate('Login')}>
-						<Text style={styles.span}>Вже є акаунт? Увійти</Text>
-					</TouchableOpacity>
-				</View>
 				</ImageBackground>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
-	
 	)
 }
 
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ffffff',
 		height: 549,
 	},
-	SvgAddPhoto:{
+	SvgAddPhoto: {
 		position: 'absolute',
 		top: -60,
 	},
