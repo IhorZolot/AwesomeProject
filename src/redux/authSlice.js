@@ -21,7 +21,9 @@ const authSlice = createSlice({
 		state.userId = null;
 		state.email = null;
 		},
-		
+		uploadPostFailure: (state, action) => {
+      state.error = action.payload;
+    },
 	},
 	extraReducers: builder => {
 		builder

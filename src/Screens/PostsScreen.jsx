@@ -18,7 +18,7 @@ export default function PostsScreen() {
       <View style={styles.localContainer}>
         <TouchableOpacity
         style={styles.commentButton}
-        onPress={() => navigation.navigate('Comments')}
+        onPress={() => navigation.navigate('Comments',{ postId:'Id' })}
       > 
        <SvgComment />
       </TouchableOpacity>

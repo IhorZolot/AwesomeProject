@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-nativ
 import CameraComponent from "./CameraComponent"; 
 import SvgTrash from '../Image/SvgTrash';
 import SvgLocation from '../Image/SvgLocation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../redux/postsSlice';
 import { useNavigation } from '@react-navigation/native';
+import { storage, uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebaseConfig.js';
 
 export default function CreatePostsScreen() {
 	const [photoName, setPhotoName] = useState(""); 
@@ -14,6 +17,7 @@ export default function CreatePostsScreen() {
   const [isButtonActive, setIsButtonActive] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const userId = useSelector(state => state.auth.userId);
   
 
   const handlePictureTaken = async (uri) => {
@@ -21,14 +25,17 @@ export default function CreatePostsScreen() {
     console.log("Посилання на фото:", uri);
   };
   
-  const publishPost = () => {
+  const publishPost = async () => {
     if (photoUri || photoName || locationName) {
       const newPost = {
         photoName,
         photoUri,
         locationName,
+        userId: userId,
+        date: Date.now().toString(),
       };
-      dispatch(addPost(newPost)); 
+      dispatch(addPost(newPost));
+      await handleUploadPost();
       clearForm();
       navigation.navigate('PostsScreen');;
     }
@@ -54,53 +61,38 @@ export default function CreatePostsScreen() {
     setIsButtonActive(false);
   };
 
-  // const uploadImg = async () => {
-  //   try {
-  //     const response = await fetch(img);
-  //     const file = await response.blob();
-  //     await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
-  //     const photoUrl = await getDownloadURL(
-  //       ref(storage, `photos/${file._data.blobId}`)
-  //     );
-  //     return photoUrl;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const uploadImg = async () => {
+    try {
+      const response = await fetch(photoUri);
+      const file = await response.blob();
+      const storageRef = ref(storage, `photos/${file._data.blobId}`);
+      await uploadBytes(storageRef, file);
+      const photoUrl = await getDownloadURL(storageRef);
+      return photoUrl;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
-  // const uploadPost = async () => {
-  //   try {
-  //     const img = await uploadImg();
-  //     await addDoc(collection(db, "posts"), {
-  //       userId,
-  //       nickname,
-  //       img,
-  //       title,
-  //       location,
-  //       coords: coords.coords,
-  //       date: Date.now().toString(),
-  //       country,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleSharePost = () => {
-  //   if (!img || !title || !location) {
-  //     return Alert.alert("Fill in all fields");
-  //   }
-  //   getLocation();
-  //   uploadPost();
-  //   navigation.navigate("InitialPostsScreen");
-  //   reset();
-  // };
-  // function reset() {
-  //   setImg(null);
-  //   setTitle("");
-  //   setLocation(null);
-  // }
-
+  const handleUploadPost = async () => {
+    try {
+      // dispatch(uploadPostRequest()); 
+      const img = await uploadImg();
+      await addDoc(collection(db, "posts"), {
+        userId: userId, 
+        img,
+        title: photoName,
+        location: locationName,
+        // coords: { latitude: 0, longitude: 0 },
+        date: Date.now().toString(),
+      });
+      // dispatch(uploadPostSuccess()); завантаження
+    } catch (error) {
+      console.log(error);
+      // dispatch(uploadPostFailure(error)); 
+    }
+  };
 
   return (
     <View style={styles.container}>
