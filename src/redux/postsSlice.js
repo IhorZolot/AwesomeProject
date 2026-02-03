@@ -10,11 +10,11 @@ const slice = createSlice({
     setPosts: (state, {payload}) => {
       state.posts = payload;
     },
-    addPost: (state, {payload}) => {
-      state.posts.push(payload);
-    },
+    // addPost: (state, {payload}) => {
+    //   state.posts.push(payload);
+    // },
   },
 });
 
-export const { setPosts, addPost } = slice.actions;
+export const { setPosts } = slice.actions;
 export const postsReducer =  slice.reducer;

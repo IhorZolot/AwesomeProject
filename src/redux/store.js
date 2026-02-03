@@ -9,6 +9,7 @@ import rootReducer from './rootReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  // whitelist: [''],
 };
 const persistedReducer = persistCombineReducers(persistConfig, rootReducer);
 const store = configureStore({
