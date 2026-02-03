@@ -32,7 +32,8 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "13.9.0",
     "react-redux": "^8.1.2",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "tar": "^7.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
